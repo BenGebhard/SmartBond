@@ -71,22 +71,22 @@ function App() {
     }
   }
 
-  async function setNewUnlockTime() {
+  async function payInterestRate() {
     try {
-      const tx = await contract.withdraw({});
+      const tx = await contract.payInterestRate();
       await tx.wait();
     } catch (error) {
       console.error("Error setting new unlock time:", error);
     }
   }
 
-  async function withdraw() {
+  async function redeemBond() {
     try {
-      const tx = await contract.withdraw({ lockAddress });
+      const tx = await contract.redeemBond();
       await tx.wait();
-      console.log("Withdrawal successful");
+      console.log("Redeem successful");
     } catch (error) {
-      console.error("Error withdrawing funds:", error);
+      console.error("Error Redeem funds:", error);
     }
   }
 
@@ -129,11 +129,11 @@ function App() {
           </div>
         </div>
         <div className="buttons">
-          <button className="button-payInterestRate" onClick={setNewUnlockTime}>
+          <button className="button-payInterestRate" onClick={payInterestRate}>
             {/*until now the SmartBond is only with one party member so the bondholder can pay the interestRate himself*/}
             Pay Interest Rate
           </button>
-          <button className="button-withdraw" onClick={withdraw}>
+          <button className="button-withdraw" onClick={redeemBond}>
             Withdraw full nominal amount
           </button>
         </div>
