@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import Lock from "./artifacts/contracts/Lock.sol/Lock.json";
 import "./App.css";
 
-const lockAddress = "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44";
+const lockAddress = "0x0165878a594ca255338adfa4d48449f69242eb8f";
 
 function App() {
   const [provider, setProvider] = useState(null);
@@ -73,13 +73,8 @@ function App() {
 
   async function setNewUnlockTime() {
     try {
-      const newUnlockTime = Math.floor(Date.now() / 1000) + 60;
-
-      const tx = await contract.setNewUnlockTime(newUnlockTime);
+      const tx = await contract.withdraw({});
       await tx.wait();
-
-      const maturityDate = await contract.maturityDate();
-      setMaturityDate(maturityDate.toNumber());
     } catch (error) {
       console.error("Error setting new unlock time:", error);
     }
@@ -87,10 +82,7 @@ function App() {
 
   async function withdraw() {
     try {
-      const tx = await contract.withdraw({
-        gasLimit: 300000,
-        value: faceValue,
-      });
+      const tx = await contract.withdraw({ lockAddress });
       await tx.wait();
       console.log("Withdrawal successful");
     } catch (error) {

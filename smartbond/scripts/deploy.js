@@ -8,20 +8,20 @@ async function main() {
 
   const faceValue = hre.ethers.parseEther("100");
 
-  const lock = await hre.ethers.deployContract(
-    "Lock",
+  const smartbond = await hre.ethers.deployContract(
+    "SmartBond",
     [maturityDate, "Mustermann", "Musterfirma", 100, 0, 5],
     {
       value: faceValue,
     }
   );
 
-  await lock.waitForDeployment();
+  await smartbond.waitForDeployment();
 
   console.log(
     `SmartBond with ${ethers.formatEther(
       faceValue
-    )}ETH and unlock timestamp ${maturityDate} deployed to ${lock.target}`
+    )}ETH and unlock timestamp ${maturityDate} deployed to ${smartbond.target}`
   );
 }
 

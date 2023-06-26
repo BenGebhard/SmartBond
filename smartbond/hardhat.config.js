@@ -13,7 +13,7 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      chainId: 1337,
+      chainId: 31337,
     },
   },
   solidity: "0.8.9",
