@@ -1,23 +1,27 @@
-// To deploy the SmartContract the ethers version must be over 6.0 because it cant read hre.ethers.parseEther.
+// To deploy the SmartContract the ethers version must be over 6.0 because it cant read hre.ethers.parseEther. | npm i ethers@6.0
 const hre = require("hardhat");
 const { ethers } = require("hardhat");
 
 async function main() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const maturityDate = currentTimestampInSeconds + 5 * 365 * 24 * 60 * 60;
 
-  const lockedAmount = hre.ethers.parseEther("0.001");
+  const faceValue = hre.ethers.parseEther("100");
 
-  const lock = await hre.ethers.deployContract("Lock", [unlockTime, "Peter"], {
-    value: lockedAmount,
-  });
+  const lock = await hre.ethers.deployContract(
+    "Lock",
+    [maturityDate, "Mustermann", "Musterfirma", 100, 0, 5],
+    {
+      value: faceValue,
+    }
+  );
 
   await lock.waitForDeployment();
 
   console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
+    `SmartBond with ${ethers.formatEther(
+      faceValue
+    )}ETH and unlock timestamp ${maturityDate} deployed to ${lock.target}`
   );
 }
 

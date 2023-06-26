@@ -5,44 +5,49 @@ pragma solidity ^0.8.9;
 // import "hardhat/console.sol";
 
 contract Lock {
-    uint public unlockTime;
+    enum PaymentFrequency { Annually, Semiannually }
+    uint public maturityDate;
     address payable public owner;
     string public ownerName;
+    string public issuerName;
+    uint public faceValue;
+    PaymentFrequency public paymentFrequency;
+    uint public interestRate;
 
     event Withdrawal(uint amount, uint when);
     event UnlockTimeUpdated(uint newUnlockTime);
     event OwnerNameUpdated(string newOwnerName);
 
-    constructor(uint _unlockTime, string memory _ownerName) payable {
+    constructor(uint _maturityDate, string memory _ownerName, string memory _issuerName, uint _faceValue, PaymentFrequency _paymentFrequency, uint _interestRate) payable {
         require(
-            block.timestamp < _unlockTime,
+            block.timestamp < _maturityDate,
             "Unlock time should be in the future"
         );
 
-        unlockTime = _unlockTime;
+        maturityDate = _maturityDate;
         owner = payable(msg.sender);
         ownerName = _ownerName;
+        issuerName = _issuerName;
+        faceValue = _faceValue;
+        paymentFrequency = _paymentFrequency;
+        interestRate = _interestRate;
     }
 
     function setNewUnlockTime(uint newUnlockTime) public {
         require(
-            newUnlockTime > unlockTime,
+            newUnlockTime > maturityDate,
             "New unlock time should be greater than current unlock time"
         );
-        unlockTime = newUnlockTime;
+        maturityDate = newUnlockTime;
 
-        emit UnlockTimeUpdated(unlockTime);
+        emit UnlockTimeUpdated(maturityDate);
     }
 
-    function withdraw() public {
-        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
-
-        require(block.timestamp >= unlockTime, "You can't withdraw yet");
+    function withdraw() external payable {
+        //require(block.timestamp >= maturityDate, "You can't withdraw yet");
         require(msg.sender == owner, "You aren't the owner");
-
         emit Withdrawal(address(this).balance, block.timestamp);
-
-        owner.transfer(address(this).balance);
+        (bool success, ) = payable(owner).call{value: faceValue}("");
+        require(success, "Payment failed");
     }
 }
