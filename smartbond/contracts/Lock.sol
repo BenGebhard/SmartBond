@@ -5,40 +5,42 @@ pragma solidity ^0.8.9;
 // import "hardhat/console.sol";
 
 contract Lock {
-    uint public unlockTime;
+    uint public maturityDate;
     address payable public owner;
     string public ownerName;
+    uint public faceValue;
 
     event Withdrawal(uint amount, uint when);
     event UnlockTimeUpdated(uint newUnlockTime);
     event OwnerNameUpdated(string newOwnerName);
 
-    constructor(uint _unlockTime, string memory _ownerName) payable {
+    constructor(uint _maturityDate, string memory _ownerName, uint _faceValue) payable {
         require(
-            block.timestamp < _unlockTime,
+            block.timestamp < _maturityDate,
             "Unlock time should be in the future"
         );
 
-        unlockTime = _unlockTime;
+        maturityDate = _maturityDate;
         owner = payable(msg.sender);
         ownerName = _ownerName;
+        faceValue = _faceValue;
     }
 
     function setNewUnlockTime(uint newUnlockTime) public {
         require(
-            newUnlockTime > unlockTime,
+            newUnlockTime > maturityDate,
             "New unlock time should be greater than current unlock time"
         );
-        unlockTime = newUnlockTime;
+        maturityDate = newUnlockTime;
 
-        emit UnlockTimeUpdated(unlockTime);
+        emit UnlockTimeUpdated(maturityDate);
     }
 
     function withdraw() public {
         // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+        // console.log("Unlock time is %o and block timestamp is %o", maturityDate, block.timestamp);
 
-        require(block.timestamp >= unlockTime, "You can't withdraw yet");
+        require(block.timestamp >= maturityDate, "You can't withdraw yet");
         require(msg.sender == owner, "You aren't the owner");
 
         emit Withdrawal(address(this).balance, block.timestamp);

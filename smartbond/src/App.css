@@ -1,23 +1,44 @@
-.page {
+.frame {
   width: 210mm; /* A4 width */
   height: 297mm; /* A4 height */
-  --s: 5px; /* control the size */
-  padding: var(--s);
-  margin: 20px auto;
-  border: calc(2 * var(--s)) solid #0000;
-  outline: 1px solid #000;
-  outline-offset: calc(-1 * var(--s));
-  background: conic-gradient(from 90deg at 1px 1px, #0000 25%, #000 0);
+  border: 10px solid #000000eb;
+  border-style: double;
+  background: #8c45453f;
+  margin: auto;
+  padding: 15px 10px;
+}
+
+.date {
+  padding: 5px 0px 0px 20px;
 }
 
 .content {
   text-align: center;
-  padding-top: 100px;
+  padding-top: 70px;
 }
 
-h1 {
+.headline {
   font-family: Copperplate;
   font-size: 75px;
   text-decoration: double underline;
   text-decoration-thickness: 2px;
+}
+
+.faceValue {
+  font-size: 30px;
+  padding-top: 30px;
+}
+
+.duration {
+  font-size: 30px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+.issuer {
+}
+
+.bondholder {
 }

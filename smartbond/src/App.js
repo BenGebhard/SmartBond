@@ -5,17 +5,27 @@ import { ethers } from "ethers";
 import Lock from "./artifacts/contracts/Lock.sol/Lock.json";
 import "./App.css";
 
-const lockAddress = "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e";
+const lockAddress = "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c";
 
 function App() {
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [account, setAccount] = useState("");
-  const [unlockTime, setUnlockTime] = useState(0);
+  const [maturityDate, setMaturityDate] = useState(0);
   const [ownerName, setOwnerName] = useState("");
+  const [faceValue, setfaceValue] = useState(0);
+  const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     initialize();
+  }, []);
+
+  useEffect(() => {
+    const today = new Date();
+    const formattedDate = `${today.getDate()}.${
+      today.getMonth() + 1
+    }.${today.getFullYear()}`;
+    setCurrentDate(formattedDate);
   }, []);
 
   async function initialize() {
@@ -33,11 +43,14 @@ function App() {
         const accounts = await provider.listAccounts();
         setAccount(accounts[0]);
 
-        const unlockTime = await contract.unlockTime();
-        setUnlockTime(unlockTime.toNumber());
+        const maturityDate = await contract.maturityDate();
+        setMaturityDate(maturityDate.toNumber());
 
         const ownerName = await contract.ownerName();
         setOwnerName(ownerName);
+
+        const faceValue = await contract.faceValue();
+        setfaceValue(faceValue.toString());
       } else {
         console.error("Please install MetaMask to use this application.");
       }
@@ -48,13 +61,13 @@ function App() {
 
   async function setNewUnlockTime() {
     try {
-      const newUnlockTime = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
+      const newUnlockTime = Math.floor(Date.now() / 1000) + 60;
 
       const tx = await contract.setNewUnlockTime(newUnlockTime);
       await tx.wait();
 
-      const unlockTime = await contract.unlockTime();
-      setUnlockTime(unlockTime.toNumber());
+      const maturityDate = await contract.maturityDate();
+      setMaturityDate(maturityDate.toNumber());
     } catch (error) {
       console.error("Error setting new unlock time:", error);
     }
@@ -65,8 +78,8 @@ function App() {
       const tx = await contract.withdraw();
       await tx.wait();
 
-      const unlockTime = await contract.unlockTime();
-      setUnlockTime(unlockTime.toNumber());
+      const maturityDate = await contract.maturityDate();
+      setMaturityDate(maturityDate.toNumber());
     } catch (error) {
       console.error("Error withdrawing funds:", error);
     }
@@ -76,11 +89,28 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  function fomartMaturityDate() {
+    const date = new Date(maturityDate * 1000);
+    return date.toLocaleDateString();
+  }
+
   return (
-    <div className="page">
+    <div
+      className="frame"
+      style={{
+        backgroundImage: `url("https://images.pexels.com/photos/7599590/pexels-photo-7599590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")`,
+      }}
+    >
+      <p className="date">Contract conclusion: {currentDate}</p>
       <div className="content">
-        <h1>Smart Bond</h1>
-        <p>Unlock Time: {unlockTime}</p>
+        <h1 className="headline">Smart Bond</h1>
+        <p className="faceValue">Nominal amount: {faceValue} ETH</p>
+        <p className="duration">Duration: {fomartMaturityDate()}</p>
+        <div className="container">
+          <div className="issuer">Flex Column 1</div>
+
+          <div className="bondholder">Flex Column 2</div>
+        </div>
         <p>Account: {account}</p>
         <h2>Owner Name: {ownerName}</h2>
         <button onClick={setNewUnlockTime}>Set New Unlock Time</button>
