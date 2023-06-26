@@ -1,3 +1,4 @@
+/*i gave every item an own style even though it repeats itself*/
 .frame {
   width: 210mm; /* A4 width */
   height: 297mm; /* A4 height */
@@ -26,10 +27,17 @@
 
 .faceValue {
   font-size: 30px;
-  padding-top: 30px;
 }
 
 .duration {
+  font-size: 30px;
+}
+
+.interestRate {
+  font-size: 30px;
+}
+
+.paymentFrequency {
   font-size: 30px;
 }
 
@@ -37,8 +45,27 @@
   display: flex;
   justify-content: space-around;
 }
-.issuer {
+
+.buttons {
+  padding-top: 100px;
+  display: flex;
+  justify-content: space-evenly;
 }
 
-.bondholder {
+.button-payInterestRate {
+  font-size: 1.2em;
+  padding: 10px 20px;
+  background-color: rgb(67, 34, 34);
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+
+.button-withdraw {
+  font-size: 1.2em;
+  padding: 10px 20px;
+  background-color: rgb(67, 34, 34);
+  color: white;
+  border-radius: 5px;
+  border: none;
 }

@@ -1,11 +1,11 @@
-// to run npm run start the ethers version must be under 6.0
+// to run npm run start the ethers version must be under 6.0 because else the import wont find it | npm i ethers@5.6.1
 
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Lock from "./artifacts/contracts/Lock.sol/Lock.json";
 import "./App.css";
 
-const lockAddress = "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c";
+const lockAddress = "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44";
 
 function App() {
   const [provider, setProvider] = useState(null);
@@ -13,8 +13,11 @@ function App() {
   const [account, setAccount] = useState("");
   const [maturityDate, setMaturityDate] = useState(0);
   const [ownerName, setOwnerName] = useState("");
+  const [issuerName, setIssuerName] = useState("");
   const [faceValue, setfaceValue] = useState(0);
   const [currentDate, setCurrentDate] = useState("");
+  const [paymentFrequency, setPaymentFrequency] = useState("");
+  const [interestRate, setInterestRate] = useState("");
 
   useEffect(() => {
     initialize();
@@ -49,8 +52,17 @@ function App() {
         const ownerName = await contract.ownerName();
         setOwnerName(ownerName);
 
+        const issuerName = await contract.issuerName();
+        setIssuerName(issuerName);
+
         const faceValue = await contract.faceValue();
         setfaceValue(faceValue.toString());
+
+        const paymentFrequency = await contract.paymentFrequency();
+        setPaymentFrequency(paymentFrequency);
+
+        const interestRate = await contract.interestRate();
+        setInterestRate(interestRate.toString());
       } else {
         console.error("Please install MetaMask to use this application.");
       }
@@ -75,11 +87,12 @@ function App() {
 
   async function withdraw() {
     try {
-      const tx = await contract.withdraw();
+      const tx = await contract.withdraw({
+        gasLimit: 300000,
+        value: faceValue,
+      });
       await tx.wait();
-
-      const maturityDate = await contract.maturityDate();
-      setMaturityDate(maturityDate.toNumber());
+      console.log("Withdrawal successful");
     } catch (error) {
       console.error("Error withdrawing funds:", error);
     }
@@ -106,15 +119,32 @@ function App() {
         <h1 className="headline">Smart Bond</h1>
         <p className="faceValue">Nominal amount: {faceValue} ETH</p>
         <p className="duration">Duration: {fomartMaturityDate()}</p>
+        <p className="interestRate"> Interest Rate: {interestRate}%</p>
+        <p className="paymentFrequency">
+          Payment Frequency: {paymentFrequency}
+        </p>
         <div className="container">
-          <div className="issuer">Flex Column 1</div>
+          <div className="issuer">
+            <h2>Issuer</h2>
+            <h3>Name: {issuerName}</h3>
+            <p>Address: </p>
+          </div>
 
-          <div className="bondholder">Flex Column 2</div>
+          <div className="bondholder">
+            <h2>Bondholder</h2>
+            <h3>Name: {ownerName}</h3>
+            <p>Address: {account}</p>
+          </div>
         </div>
-        <p>Account: {account}</p>
-        <h2>Owner Name: {ownerName}</h2>
-        <button onClick={setNewUnlockTime}>Set New Unlock Time</button>
-        <button onClick={withdraw}>Withdraw</button>
+        <div className="buttons">
+          <button className="button-payInterestRate" onClick={setNewUnlockTime}>
+            {/*until now the SmartBond is only with one party member so the bondholder can pay the interestRate himself*/}
+            Pay Interest Rate
+          </button>
+          <button className="button-withdraw" onClick={withdraw}>
+            Withdraw full nominal amount
+          </button>
+        </div>
       </div>
     </div>
   );

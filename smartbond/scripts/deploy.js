@@ -1,4 +1,4 @@
-// To deploy the SmartContract the ethers version must be over 6.0 because it cant read hre.ethers.parseEther.
+// To deploy the SmartContract the ethers version must be over 6.0 because it cant read hre.ethers.parseEther. | npm i ethers@6.0
 const hre = require("hardhat");
 const { ethers } = require("hardhat");
 
@@ -10,7 +10,7 @@ async function main() {
 
   const lock = await hre.ethers.deployContract(
     "Lock",
-    [maturityDate, "Peter", 100],
+    [maturityDate, "Mustermann", "Musterfirma", 100, 0, 5],
     {
       value: faceValue,
     }
