@@ -72,8 +72,8 @@
       ]
     },
     "/Users/bengebhard/projects/SmartBond/smartbond/contracts/SmartBond.sol": {
-      "lastModificationDate": 1687794326890,
-      "contentHash": "81b29463525a37c3fe841bbf1034865f",
+      "lastModificationDate": 1687796115804,
+      "contentHash": "14a459e48bb2e9d64fb1e67760d7edde",
       "sourceName": "contracts/SmartBond.sol",
       "solcConfig": {
         "version": "0.8.9",

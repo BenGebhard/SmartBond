@@ -14,7 +14,7 @@ contract SmartBond {
     PaymentFrequency public paymentFrequency;
     uint public interestRate;
 
-    event Withdrawal(uint amount, uint when);
+    event redeemerBond(uint amount, uint when);
     event OwnerNameUpdated(string newOwnerName);
 
     constructor(uint _maturityDate, string memory _ownerName, string memory _issuerName, uint _faceValue, PaymentFrequency _paymentFrequency, uint _interestRate) payable {
@@ -32,12 +32,14 @@ contract SmartBond {
         interestRate = _interestRate;
     }
 
-    function payInterestRate() public {
-        owner.transfer(address(this).balance);
+    function payInterestRate() public payable {
+        uint interestPayment = (faceValue * interestRate) / 100;
+        owner.transfer(interestPayment);
         
     }
 
-    function redeemBond() public  {
+    function redeemBond() public payable  {
+        emit redeemerBond(address(this).balance, block.timestamp);
         owner.transfer(address(this).balance);
     }
 }

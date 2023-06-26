@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import Lock from "./artifacts/contracts/Lock.sol/Lock.json";
+import Lock from "./artifacts/contracts/SmartBond.sol/SmartBond.json";
 import "./App.css";
 
-const lockAddress = "0x0165878a594ca255338adfa4d48449f69242eb8f";
+const lockAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 
 function App() {
   const [provider, setProvider] = useState(null);
@@ -73,7 +73,7 @@ function App() {
 
   async function payInterestRate() {
     try {
-      const tx = await contract.payInterestRate();
+      const tx = await contract.payInterestRate({});
       await tx.wait();
     } catch (error) {
       console.error("Error setting new unlock time:", error);
@@ -82,7 +82,9 @@ function App() {
 
   async function redeemBond() {
     try {
-      const tx = await contract.redeemBond();
+      const tx = await contract.redeemBond({
+        gasLimit: 300000,
+      });
       await tx.wait();
       console.log("Redeem successful");
     } catch (error) {
