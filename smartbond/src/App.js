@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import Lock from "./artifacts/contracts/SmartBond.sol/SmartBond.json";
 import "./App.css";
 
-const lockAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const lockAddress = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
 
 function App() {
   const [provider, setProvider] = useState(null);
@@ -18,10 +18,17 @@ function App() {
   const [currentDate, setCurrentDate] = useState("");
   const [paymentFrequency, setPaymentFrequency] = useState("");
   const [interestRate, setInterestRate] = useState("");
+  const [isContractSigned, setIsContractSigned] = useState(false);
 
   useEffect(() => {
     initialize();
   }, []);
+
+  useEffect(() => {
+    if (isContractSigned) {
+      // Additional logic if needed
+    }
+  }, [isContractSigned]);
 
   useEffect(() => {
     const today = new Date();
@@ -71,12 +78,22 @@ function App() {
     }
   }
 
+  async function signContract() {
+    try {
+      const tx = await contract.signBond();
+      await tx.wait();
+      setIsContractSigned(true);
+    } catch (error) {
+      console.error("Error signing the contract:", error);
+    }
+  }
+
   async function payInterestRate() {
     try {
       const tx = await contract.payInterestRate({});
       await tx.wait();
     } catch (error) {
-      console.error("Error setting new unlock time:", error);
+      console.error("Error paying interest rate:", error);
     }
   }
 
@@ -88,12 +105,27 @@ function App() {
       await tx.wait();
       console.log("Redeem successful");
     } catch (error) {
-      console.error("Error Redeem funds:", error);
+      console.error("Error redeeming funds:", error);
     }
   }
 
   if (!contract) {
     return <div>Loading...</div>;
+  }
+
+  if (!isContractSigned) {
+    return (
+      <div
+        className="frame"
+        style={{
+          backgroundImage: `url("https://images.pexels.com/photos/7599590/pexels-photo-7599590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")`,
+        }}
+      >
+        <button className="button-signContract" onClick={signContract}>
+          Sign Contract
+        </button>
+      </div>
+    );
   }
 
   function fomartMaturityDate() {
@@ -132,7 +164,6 @@ function App() {
         </div>
         <div className="buttons">
           <button className="button-payInterestRate" onClick={payInterestRate}>
-            {/*until now the SmartBond is only with one party member so the bondholder can pay the interestRate himself*/}
             Pay Interest Rate
           </button>
           <button className="button-withdraw" onClick={redeemBond}>

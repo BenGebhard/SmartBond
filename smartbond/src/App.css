@@ -52,6 +52,19 @@
   justify-content: space-evenly;
 }
 
+.button-signContract {
+  font-size: 2em;
+  padding: 10px 20px;
+  background-color: rgb(67, 34, 34);
+  color: white;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-top: 120mm;
+}
+
 .button-payInterestRate {
   font-size: 1.2em;
   padding: 10px 20px;

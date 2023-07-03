@@ -6,11 +6,23 @@ async function main() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
   const maturityDate = currentTimestampInSeconds + 5 * 365 * 24 * 60 * 60;
 
-  const faceValue = hre.ethers.parseEther("100");
+  const faceValue = hre.ethers.parseEther("0.001");
+
+  const issuerAddress = "0x1234567890123456789012345678901234567890"; // Replace with the actual issuer address
+  const priceFeedAddress = "0x0987654321098765432109876543210987654321"; // Replace with the actual price feed address
 
   const smartbond = await hre.ethers.deployContract(
     "SmartBond",
-    [maturityDate, "Mustermann", "Musterfirma", 100, 0, 5],
+    [
+      "Musterfirma",
+      issuerAddress,
+      maturityDate,
+      "Mustermann",
+      faceValue,
+      0,
+      5,
+      priceFeedAddress,
+    ],
     {
       value: faceValue,
     }
@@ -21,7 +33,7 @@ async function main() {
   console.log(
     `SmartBond with ${ethers.formatEther(
       faceValue
-    )}ETH and unlock timestamp ${maturityDate} deployed to ${smartbond.target}`
+    )} ETH and unlock timestamp ${maturityDate} deployed to ${smartbond.target}`
   );
 }
 
