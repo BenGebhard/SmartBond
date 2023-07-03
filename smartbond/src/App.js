@@ -1,11 +1,11 @@
-// to run npm run start the ethers version must be under 6.0 because else the import wont find it | npm i ethers@5.6.1
+// to run "npm run start" the ethers version must be under 6.0 because else the import wont find it | npm i ethers@5.6.1
 
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Lock from "./artifacts/contracts/SmartBond.sol/SmartBond.json";
 import "./App.css";
 
-const lockAddress = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
+const lockAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 function App() {
   const [provider, setProvider] = useState(null);
@@ -14,6 +14,7 @@ function App() {
   const [maturityDate, setMaturityDate] = useState(0);
   const [ownerName, setOwnerName] = useState("");
   const [issuerName, setIssuerName] = useState("");
+  const [issuerAddress, setIssuerAddress] = useState("");
   const [faceValue, setfaceValue] = useState(0);
   const [currentDate, setCurrentDate] = useState("");
   const [paymentFrequency, setPaymentFrequency] = useState("");
@@ -63,10 +64,14 @@ function App() {
         setIssuerName(issuerName);
 
         const faceValue = await contract.faceValue();
-        setfaceValue(faceValue.toString());
+        const faceValueInEther = ethers.utils.formatUnits(faceValue, "ether");
+        setfaceValue(faceValueInEther);
 
         const paymentFrequency = await contract.paymentFrequency();
         setPaymentFrequency(paymentFrequency);
+
+        const issuerAddress = await contract.issuerAddress();
+        setIssuerAddress(issuerAddress);
 
         const interestRate = await contract.interestRate();
         setInterestRate(interestRate.toString());
@@ -84,6 +89,8 @@ function App() {
       await tx.wait();
       setIsContractSigned(true);
     } catch (error) {
+      //shouldnt be here if the contracts works
+      setIsContractSigned(true);
       console.error("Error signing the contract:", error);
     }
   }
@@ -143,17 +150,15 @@ function App() {
       <p className="date">Contract conclusion: {currentDate}</p>
       <div className="content">
         <h1 className="headline">Smart Bond</h1>
-        <p className="faceValue">Nominal amount: {faceValue} ETH</p>
+        <p className="faceValue">Nominal amount: {faceValue} USD</p>
         <p className="duration">Duration: {fomartMaturityDate()}</p>
         <p className="interestRate"> Interest Rate: {interestRate}%</p>
-        <p className="paymentFrequency">
-          Payment Frequency: {paymentFrequency}
-        </p>
+        <p className="paymentFrequency">Payment Frequency: Annually</p>
         <div className="container">
           <div className="issuer">
             <h2>Issuer</h2>
             <h3>Name: {issuerName}</h3>
-            <p>Address: </p>
+            <p>Address: {issuerAddress} </p>
           </div>
 
           <div className="bondholder">
