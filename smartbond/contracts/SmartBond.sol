@@ -1,20 +1,20 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol";
 
 
 contract SmartBond {
-    string public issuerName;
-    address payable public issuerAddress;
-    address payable public owner;
-    string public ownerName;
-    uint public maturityDate;
-    uint public faceValue;
-    uint public interestRate;
+    string public issuerName; // Bond created by a company or the government.
+    address payable public issuerAddress; // The wallet address of the issuer
+    address payable public owner; // The wallet address of the owner
+    string public ownerName; // An individual or entity that owns or holds the bond.
+    uint public maturityDate; // Due date when the issuer needs to pay the faceValue to the owner.
+    uint public faceValue; // The amount repaid to the bondholder at maturity.
+    uint public interestRate; // The amount of interest due per period.
     PaymentFrequency public paymentFrequency;
-    enum PaymentFrequency { Annually, Semiannually }
-    AggregatorV3Interface internal ethUsdPriceFeed;
+    enum PaymentFrequency { Annually, Semiannually } // Enum cant be translated until now
+    AggregatorV3Interface internal ethUsdPriceFeed; //imports the Ethereum Price in usd
 
     event redeemerBond(uint amount, uint when);
 

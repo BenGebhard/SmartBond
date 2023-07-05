@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+# SmartBond English Version
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+SmartBond is a smart contract that enables the issuance, trading, and management of bonds on the Ethereum blockchain.
 
-## Available Scripts
+## Functions
 
-In the project directory, you can run:
+The SmartBond smart contract provides the following functions:
 
-### `npm start`
+- **Initialization**: When using the SmartBond contract, various parameters need to be set, including the issuer's name, the issuer's address, the owner's name, the maturity date, the face value, the interest rate, and the payment frequency. This can be done in the script folder, and then open the deploy.js file.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Signing the Contract**: The issuer can sign the SmartBond contract by calling the `signBond` function, which should transfers the face value of the bond in Ether to the issuer's address.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Interest Payment**: The SmartBond contract enables the payment of interest to the owner of the bond. The `payInterestRate` function calculates and transfers the interest payment amount based on the face value and the specified interest rate.
 
-### `npm test`
+- **Redeeming the Bond**: After reaching the maturity date, the bond owner can redeem the bond and receive the full nominal value. The `redeemBond` function redeems the bond by calculating the Ether equivalent of the face value and transferring it to the owner's address.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Unfortunately the functions don´t work as intended and need to be revised to work properly
 
-### `npm run build`
+## Usage
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To use the SmartBond smart contract, follow the steps below:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Check Ethereum Version: Ensure that your project has at least Ethereum version 6.0 installed `npm i ethers@6.0`. You can check the installed version by running the command npx hardhat version.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Deploy the SmartBond contract:
 
-### `npm run eject`
+   - Open a terminal and navigate to your project directory.
+   - Run the deploy command to deploy the SmartBond contract using Hardhat: -`npx hardhat run --network localhost scripts/deploy.js`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Start the React Web UI:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   - This time Ethereum Version needs to be under 6.0 `npm i ethers@5.6.1`.
+   - Run the command npm start to start the React development server.
+   - Access the SmartBond web interface by opening a web browser and visiting the specified URL (usually http://localhost:3000 or as indicated in the terminal).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. Interact with the SmartBond contract:
+   - Sign the contract by calling the `signBond` function and transfer the face value to the issuer.
+   - Pay out the interest amount to the owner by calling the `payInterestRate` function.
+   - Redeem the bond and receive the full face value by calling the `redeemBond` function.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Note
 
-## Learn More
+- Please note that the SmartBond smart contract is a simple example and may require further customization and enhancements to meet specific requirements.
+- Make sure you have the necessary Ethereum infrastructure in place to interact with the smart contract and consider transaction fees and other aspects of the Ethereum blockchain.
+- It is recommended that you thoroughly test the smart contract before using it and ensure that it meets the requirements and security standards.
+- This is not financial or legal advice. Consult a professional if needed to ensure your requirements and legal obligations are met.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Another Note: This project is licensed as "Unlicensed".
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+# SmartBond deutsche Version
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+SmartBond ist ein Smart Contract, der die Ausgabe, den Handel und das Management von Anleihen auf der Ethereum-Blockchain ermöglicht.
 
-### Analyzing the Bundle Size
+## Funktionen
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Der Smart Contract SmartBond bietet folgende Funktionen:
 
-### Making a Progressive Web App
+- **Initialisierung**: Bei Verwendung des Smart Contracts SmartBond müssen verschiedene Parameter festgelegt werden, einschließlich des Namens des Emittenten, der Adresse des Emittenten, des Namens des Eigentümers, des Fälligkeitsdatums, des Nennwerts, des Zinssatzes und der Zahlungsfrequenz. Dies kann im Ordner "scripts" erfolgen, indem die Datei "deploy.js" geöffnet wird.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Unterzeichnung des Vertrags**: Der Emittent kann den Smart Contract SmartBond durch Aufruf der Funktion "signBond" unterzeichnen, indem der Nennwert der Anleihe in Ether an die Adresse des Emittenten überwiesen wird.
 
-### Advanced Configuration
+- **Zinszahlung**: Der Smart Contract SmartBond ermöglicht die Zahlung von Zinsen an den Eigentümer der Anleihe. Die Funktion "payInterestRate" berechnet den Zinszahlungsbetrag basierend auf dem Nennwert und dem angegebenen Zinssatz und überweist ihn.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **Einlösung der Anleihe**: Nach Erreichen des Fälligkeitsdatums kann der Eigentümer die Anleihe einlösen und den vollen Nennwert erhalten. Die Funktion "redeemBond" löst die Anleihe ein, indem der Äquivalentwert des Nennwerts in Ether berechnet und an die Adresse des Eigentümers überwiesen wird.
 
-### Deployment
+## Leider funktionieren die Funktionen nicht wie beabsichtigt und müssen überarbeitet werden, um ordnungsgemäß zu funktionieren.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Verwendung
 
-### `npm run build` fails to minify
+Um den Smart Contract SmartBond zu verwenden, befolgen Sie die folgenden Schritte:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Überprüfen der Ethereum-Version: Stellen Sie sicher, dass Ihr Projekt mindestens Ethereum-Version 6.0 installiert hat `npm i ethers@6.0`. Sie können die installierte Version überprüfen, indem Sie den Befehl `npx hardhat version` ausführen.
+
+2. Bereitstellung des Smart Contracts SmartBond:
+
+   - Öffnen Sie ein Terminal und navigieren Sie zu Ihrem Projektverzeichnis.
+   - Führen Sie den Bereitstellungsbefehl aus, um den Smart Contract SmartBond mithilfe von Hardhat bereitzustellen:
+     - `npx hardhat run --network localhost scripts/deploy.js`
+
+3. Starten der React Web UI:
+
+   - In diesem Fall muss die Ethereum-Version unter 6.0 liegen `npm i ethers@5.6.1`.
+   - Führen Sie den Befehl `npm start` aus, um den React-Entwicklungsserver zu starten.
+   - Öffnen Sie einen Webbrowser und greifen Sie über die angegebene URL auf die SmartBond-Web-Benutzeroberfläche zu (in der Regel http://localhost:3000 oder wie im Terminal angegeben).
+
+4. Interaktion mit dem Smart Contract SmartBond:
+   - Unterzeichnen Sie den Vertrag, indem Sie die Funktion "signBond" aufrufen und den Nennwert an den Emittenten überweisen.
+   - Zahlen Sie den Zinsbetrag an den Eigentümer aus, indem Sie die Funktion "payInterestRate" aufrufen.
+   - Lösen Sie die Anleihe ein und erhalten Sie den vollen Nennwert, indem Sie die Funktion "redeemBond" aufrufen.
+
+## Hinweis
+
+- Beachten Sie bitte, dass der Smart Contract SmartBond ein einfaches Beispiel ist und möglicherweise weitere Anpassungen und Verbesserungen erfordert, um spezifische Anforderungen zu erfüllen.
+- Stellen Sie sicher, dass Sie die erforderliche Ethereum-Infrastruktur haben, um mit dem Smart Contract zu interagieren, und berücksichtigen Sie Transaktionsgebühren und andere Aspekte der Ethereum-Blockchain.
+- Es wird empfohlen, den Smart Contract vor der Verwendung gründlich zu testen und sicherzustellen, dass er den Anforderungen und Sicherheitsstandards entspricht.
+- Dies stellt keine finanzielle oder rechtliche Beratung dar. Konsultieren Sie bei Bedarf einen Fachexperten, um sicherzustellen, dass Ihre Anforderungen und rechtlichen Verpflichtungen erfüllt sind.
+
+---
+
+noch ein Hinweis: Dieses Projekt ist lizenziert als "Unlicensed".
